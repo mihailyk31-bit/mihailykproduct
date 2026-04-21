@@ -747,6 +747,31 @@ function bind(){
   if(p)p.addEventListener('input',()=>{uphone=p.value;updBtn();});
 }
 
+// Читаем URL-параметры — если открыт для переноса, сразу настраиваем состояние
+(function initFromUrl() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('reschedule') !== '1') return;
+
+  const docName = decodeURIComponent(p.get('doc') || '');
+  const svcName = decodeURIComponent(p.get('svc') || '');
+
+  const foundDoc = DOCTORS.find(d => d.name === docName);
+  if (foundDoc) doc = foundDoc;
+
+  if (foundDoc) {
+    const foundSvc = (SERVICES[foundDoc.id] || []).find(s => s.nm === svcName);
+    if (foundSvc) svc = foundSvc;
+  }
+
+  isReschedule = true;
+  rescheduleIdx = parseInt(p.get('idx') || '0');
+  view = 'booking';
+
+  if (doc && svc) step = 3;      // врач и услуга известны — сразу к дате
+  else if (doc)   step = 2;      // только врач — выбрать услугу
+  else            step = 1;      // с начала
+})();
+
 render();
 </script>
 </body>
