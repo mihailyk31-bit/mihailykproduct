@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="ngrok-skip-browser-warning" content="true">
-<title>SmilePro — Запись к стоматологу</title>
+<title>MihailykProduct — Запись к стоматологу</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -21,7 +21,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Manrope',sans-serif;overflow-x:hidden}
 ::-webkit-scrollbar{display:none}
-.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.3px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
 .badge-blue{background:rgba(71,118,230,.18);color:#7EA8FF}
 .badge-green{background:rgba(0,210,163,.15);color:var(--success)}
 .badge-warn{background:rgba(255,184,54,.15);color:var(--warn)}
@@ -29,12 +29,12 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Manrope'
 .badge-purple{background:rgba(142,84,233,.18);color:#B88AFF}
 
 /* HDR */
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:rgba(8,13,24,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:rgba(8,13,24,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
 .hdr-logo{display:flex;align-items:center;gap:9px}
 .hdr-icon{width:34px;height:34px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 12px rgba(71,118,230,.4)}
 .hdr-name{font-size:17px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hdr-back{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--t2);cursor:pointer;border-radius:10px;transition:.2s;border:1px solid var(--border)}
-.hdr-back:hover{background:var(--card2);color:var(--t1)}
+.hdr-back:hover{background:var(--card2)}
 .hdr-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--t2);cursor:pointer;border-radius:10px;transition:.2s}
 .hdr-btn:hover{background:var(--card2)}
 
@@ -43,7 +43,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Manrope'
 .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 2px;color:var(--t3);font-size:10px;font-weight:600;cursor:pointer;transition:.2s;border:none;background:none;font-family:inherit;position:relative}
 .tab.on{color:var(--a1)}
 .tab.on::after{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--grad);border-radius:0 0 4px 4px}
-.tab svg{width:21px;height:21px;transition:.2s}
+.tab svg{width:21px;height:21px}
 .tab.on svg{filter:drop-shadow(0 0 6px rgba(71,118,230,.7))}
 .tab-badge{position:absolute;top:6px;right:calc(50% - 16px);width:16px;height:16px;border-radius:50%;background:var(--danger);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
 
@@ -67,6 +67,49 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Manrope'
 .s-title{font-size:25px;font-weight:900;margin-bottom:4px;line-height:1.2}
 .s-sub{font-size:13px;color:var(--t2);margin-bottom:20px;line-height:1.5}
 
+/* ── УТП 1: SYMPTOM MATCHER ── */
+.sym-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sym-card{padding:16px 14px;border-radius:var(--r2);background:var(--card);border:1.5px solid var(--border);cursor:pointer;transition:.25s;position:relative;overflow:hidden}
+.sym-card::before{content:'';position:absolute;inset:0;opacity:0;transition:.25s;background:var(--grad-soft)}
+.sym-card:hover,.sym-card.sel{border-color:var(--a1)}
+.sym-card.sel{box-shadow:0 0 0 1.5px var(--a1),0 4px 20px rgba(71,118,230,.2)}
+.sym-card.sel::before,.sym-card:hover::before{opacity:1}
+.sym-ico{font-size:28px;margin-bottom:8px;display:block;position:relative;z-index:1}
+.sym-txt{font-size:14px;font-weight:700;position:relative;z-index:1;margin-bottom:3px}
+.sym-desc{font-size:11px;color:var(--t2);position:relative;z-index:1}
+.sym-tick{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;opacity:0;transition:.25s;transform:scale(0);z-index:1}
+.sym-card.sel .sym-tick{opacity:1;transform:scale(1)}
+.match-result{background:var(--card);border:1.5px solid var(--a1);border-radius:var(--r2);padding:16px;margin-top:16px;animation:fadeUp .3s ease;display:none}
+.match-result.show{display:block}
+.match-title{font-size:13px;color:var(--t2);margin-bottom:10px;font-weight:600}
+.match-doc{display:flex;align-items:center;gap:12px}
+.match-av{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff;flex-shrink:0}
+
+/* ── УТП 2: PATIENT CARD ── */
+.fear-row{display:flex;gap:8px;margin-top:6px}
+.fear-btn{flex:1;padding:12px 4px;border-radius:var(--r3);border:1.5px solid var(--border);background:var(--card);text-align:center;font-size:22px;cursor:pointer;transition:.25s}
+.fear-btn:hover{border-color:var(--border2);background:var(--card2)}
+.fear-btn.sel{border-color:var(--a1);background:rgba(71,118,230,.15);box-shadow:0 0 0 1px var(--a1)}
+.fear-label{font-size:10px;color:var(--t2);font-weight:600;margin-top:4px}
+.allergy-wrap{position:relative}
+.allergy-tag{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:99px;background:rgba(255,87,87,.15);border:1px solid rgba(255,87,87,.3);color:var(--danger);font-size:12px;font-weight:700;margin:4px 4px 0 0;cursor:pointer}
+.allergy-tag:hover{background:rgba(255,87,87,.25)}
+.allergy-tag::after{content:'×';font-size:14px}
+.fi-sm{width:100%;padding:11px 14px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r3);color:var(--t1);font-family:inherit;font-size:14px;outline:none;transition:.2s}
+.fi-sm:focus{border-color:var(--a1);background:var(--card2)}
+.fi-sm::placeholder{color:var(--t3)}
+
+/* ── УТП 3: WAITLIST ── */
+.waitlist-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:var(--r2);border:1.5px dashed var(--border2);background:none;color:var(--t2);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;width:100%;margin-top:16px}
+.waitlist-btn:hover{border-color:var(--a1);color:var(--a1)}
+.waitlist-btn.joined{border-style:solid;border-color:var(--success);color:var(--success);background:rgba(0,210,163,.08)}
+
+/* ── УТП 4: SMART REMINDER CARD ── */
+.reminder-card{background:rgba(71,118,230,.08);border:1.5px solid rgba(71,118,230,.25);border-radius:var(--r2);padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px}
+.reminder-card .ri{font-size:22px;flex-shrink:0;margin-top:2px}
+.reminder-card .rt{font-size:13px;font-weight:700;margin-bottom:3px}
+.reminder-card .rd{font-size:12px;color:var(--t2);line-height:1.5}
+
 /* DOCTOR CARDS */
 .doc-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r1);padding:16px;cursor:pointer;transition:.25s;margin-bottom:10px;position:relative;overflow:hidden}
 .doc-card::before{content:'';position:absolute;inset:0;background:var(--grad-soft);opacity:0;transition:.25s}
@@ -74,7 +117,7 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Manrope'
 .doc-card.sel::before,.doc-card:hover::before{opacity:1}
 .doc-card.sel{box-shadow:0 0 0 1.5px var(--a1),0 4px 20px rgba(71,118,230,.2)}
 .doc-av{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;position:relative;z-index:1}
-.doc-av-badge{position:absolute;bottom:-3px;right:-3px;width:14px;height:14px;border-radius:50%;border:2px solid var(--card);background:var(--success)}
+.doc-av-dot{position:absolute;bottom:-3px;right:-3px;width:14px;height:14px;border-radius:50%;border:2px solid var(--card);background:var(--success)}
 .doc-info{flex:1;min-width:0;position:relative;z-index:1}
 .doc-name{font-size:15px;font-weight:700;margin-bottom:2px}
 .doc-role{font-size:12px;color:var(--t2);margin-bottom:7px}
@@ -124,12 +167,18 @@ html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Manrope'
 .fi{width:100%;padding:14px 16px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);color:var(--t1);font-family:inherit;font-size:15px;outline:none;transition:.2s}
 .fi:focus{border-color:var(--a1);background:var(--card2);box-shadow:0 0 0 3px rgba(71,118,230,.12)}
 .fi::placeholder{color:var(--t3)}
-textarea.fi{resize:vertical;min-height:88px}
+textarea.fi{resize:vertical;min-height:80px}
 .promo-row{display:flex;gap:8px}
 .promo-row .fi{flex:1}
 .promo-btn{padding:14px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:var(--r2);color:var(--t1);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s}
 .promo-btn:hover{border-color:var(--a1);color:var(--a1)}
 .promo-ok{margin-top:6px;font-size:12px;font-weight:700;display:none}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px}
+.toggle-label{font-size:14px;font-weight:600}
+.toggle{width:44px;height:24px;border-radius:99px;background:var(--border2);cursor:pointer;transition:.3s;position:relative}
+.toggle.on{background:var(--a1)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.toggle.on::after{left:23px}
 
 /* SUMMARY */
 .smr{background:var(--card);border-radius:var(--r1);overflow:hidden;border:1.5px solid var(--border)}
@@ -142,13 +191,15 @@ textarea.fi{resize:vertical;min-height:88px}
 .smr-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 20px;border-bottom:1px solid var(--border)}
 .smr-row:last-child{border-bottom:none}
 .smr-k{font-size:11px;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
-.smr-v{font-size:14px;font-weight:700;text-align:right;max-width:58%}
+.smr-v{font-size:14px;font-weight:700;text-align:right;max-width:60%}
 .smr-v.accent{color:#7EA8FF}
 .smr-v.green{color:var(--success)}
+.smr-v.red{color:var(--danger)}
+.smr-alert{margin:12px 20px;padding:12px 14px;background:rgba(255,87,87,.1);border:1px solid rgba(255,87,87,.25);border-radius:var(--r3);font-size:13px;color:var(--danger);display:flex;gap:8px;align-items:flex-start}
 
 /* BOTTOM BAR */
 .bbar{position:fixed;bottom:0;left:0;right:0;padding:12px 18px;padding-bottom:max(16px,env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 55%,transparent);z-index:100}
-.btn{width:100%;padding:17px;border:none;border-radius:var(--r2);background:var(--grad);color:#fff;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;transition:.25s;box-shadow:0 6px 24px rgba(71,118,230,.4);position:relative;overflow:hidden;letter-spacing:.2px}
+.btn{width:100%;padding:17px;border:none;border-radius:var(--r2);background:var(--grad);color:#fff;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;transition:.25s;box-shadow:0 6px 24px rgba(71,118,230,.4);position:relative;overflow:hidden}
 .btn::after{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:rgba(255,255,255,.12);transform:skewX(-20deg);transition:.6s}
 .btn:hover::after{left:120%}
 .btn:active{transform:scale(.98)}
@@ -157,25 +208,28 @@ textarea.fi{resize:vertical;min-height:88px}
 
 /* MAIN */
 .main{padding:16px 18px 100px}
-.hero{border-radius:var(--r1);padding:22px 20px;margin-bottom:16px;position:relative;overflow:hidden;background:var(--card);border:1px solid var(--border)}
+.hero{border-radius:var(--r1);padding:22px 20px;margin-bottom:14px;position:relative;overflow:hidden;background:var(--card);border:1px solid var(--border)}
 .hero::before{content:'';position:absolute;inset:0;background:var(--grad);opacity:.07}
 .hglow{position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(71,118,230,.3),transparent 70%);top:-50px;right:-50px}
 .hglow2{position:absolute;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(142,84,233,.25),transparent 70%);bottom:-40px;left:-20px}
 .hero-greet{font-size:13px;color:var(--t2);margin-bottom:4px;position:relative;z-index:1}
 .hero-name{font-size:21px;font-weight:900;margin-bottom:8px;position:relative;z-index:1;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-desc{font-size:13px;color:var(--t2);line-height:1.6;position:relative;z-index:1}
-.hero-stats{display:flex;gap:18px;margin-top:14px;position:relative;z-index:1}
+.hero-stats{display:flex;gap:16px;margin-top:14px;position:relative;z-index:1}
 .hs{display:flex;flex-direction:column}
 .hs-n{font-size:19px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hs-l{font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase}
-.promo-banner{border-radius:var(--r2);padding:16px 18px;margin-bottom:16px;position:relative;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,rgba(255,184,54,.12),rgba(255,87,87,.08));border:1.5px solid rgba(255,184,54,.25)}
-.promo-banner:hover{border-color:rgba(255,184,54,.45)}
-.promo-tag{font-size:10px;font-weight:800;color:var(--warn);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
-.promo-title{font-size:16px;font-weight:800;margin-bottom:3px}
-.promo-desc{font-size:12px;color:var(--t2)}
-.promo-banner::after{content:'🎁';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:36px;opacity:.5}
+.utp-banner{border-radius:var(--r2);padding:14px 16px;margin-bottom:12px;position:relative;overflow:hidden;display:flex;align-items:center;gap:12px}
+.utp-banner.orange{background:linear-gradient(135deg,rgba(255,184,54,.12),rgba(255,100,0,.08));border:1.5px solid rgba(255,184,54,.22)}
+.utp-banner.green{background:linear-gradient(135deg,rgba(0,210,163,.1),rgba(0,150,120,.06));border:1.5px solid rgba(0,210,163,.2)}
+.utp-icon{font-size:28px;flex-shrink:0}
+.utp-body .utp-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.utp-body.orange .utp-tag{color:var(--warn)}
+.utp-body.green .utp-tag{color:var(--success)}
+.utp-body .utp-title{font-size:14px;font-weight:800;margin-bottom:1px}
+.utp-body .utp-sub{font-size:12px;color:var(--t2)}
 .act-grid{display:flex;flex-direction:column;gap:10px}
-.act-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r1);padding:18px 16px;cursor:pointer;transition:.25s}
+.act-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r1);padding:16px;cursor:pointer;transition:.25s}
 .act-card:hover{background:var(--card2);border-color:var(--border2);transform:translateY(-1px)}
 .act-card:active{transform:translateY(0)}
 .act-ico{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
@@ -194,9 +248,10 @@ textarea.fi{resize:vertical;min-height:88px}
 .rb-re:hover{background:rgba(71,118,230,.25)}
 .rb-cx{background:rgba(255,87,87,.12);color:var(--danger)}
 .rb-cx:hover{background:rgba(255,87,87,.2)}
+.countdown{font-size:12px;color:var(--warn);font-weight:700;margin-top:6px;display:flex;align-items:center;gap:5px}
 
 /* OVERLAY */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:flex;align-items:flex-end;animation:fadeIn .2s ease}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:300;display:flex;align-items:flex-end;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .sheet{background:var(--card2);border-radius:24px 24px 0 0;padding:24px 20px;padding-bottom:max(24px,env(safe-area-inset-bottom));width:100%;animation:slideUp2 .25s ease}
 @keyframes slideUp2{from{transform:translateY(100%)}to{transform:translateY(0)}}
@@ -209,7 +264,7 @@ textarea.fi{resize:vertical;min-height:88px}
 
 /* CLINIC */
 .info-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r1);padding:0 4px}
-.info-row{display:flex;align-items:center;gap:14px;padding:12px 12px;border-bottom:1px solid var(--border)}
+.info-row{display:flex;align-items:center;gap:14px;padding:12px;border-bottom:1px solid var(--border)}
 .info-row:last-child{border-bottom:none}
 .info-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .info-lbl{font-size:11px;color:var(--t2);font-weight:600;margin-bottom:2px;text-transform:uppercase;letter-spacing:.3px}
@@ -236,19 +291,35 @@ textarea.fi{resize:vertical;min-height:88px}
 .stab{padding:8px 14px;border-radius:99px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;border:1.5px solid var(--border);color:var(--t2);white-space:nowrap;flex-shrink:0}
 .stab.on{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(71,118,230,.35)}
 
+/* NPS */
+.nps-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:400;display:flex;align-items:flex-end;animation:fadeIn .25s ease}
+.nps-sheet{background:var(--card2);border-radius:24px 24px 0 0;padding:24px 20px;padding-bottom:max(28px,env(safe-area-inset-bottom));width:100%;animation:slideUp2 .3s ease}
+.nps-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.nps-sub{font-size:13px;color:var(--t2);margin-bottom:18px}
+.nps-scale{display:flex;gap:5px;justify-content:center;margin-bottom:8px}
+.nps-n{width:30px;height:36px;border-radius:8px;border:1.5px solid var(--border2);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;color:var(--t2)}
+.nps-n:hover{border-color:var(--a1);color:var(--a1)}
+.nps-n.sel{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(71,118,230,.4)}
+.nps-lbls{display:flex;justify-content:space-between;font-size:11px;color:var(--t3);font-weight:600;margin-bottom:18px;padding:0 2px}
+.nps-done{background:rgba(0,210,163,.1);border:1.5px solid rgba(0,210,163,.25);border-radius:var(--r2);padding:16px;text-align:center;display:none}
+
 /* SUCCESS */
-.suc{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 0 0}
-.suc-confetti{font-size:32px;margin-bottom:8px;animation:bob 2s ease-in-out infinite}
+.suc{display:flex;flex-direction:column;align-items:center;text-align:center;padding:28px 0 0}
+.suc-confetti{font-size:32px;margin-bottom:6px;animation:bob 2s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.suc-ring{width:96px;height:96px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:pop .55s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(71,118,230,.5)}
+.suc-ring{width:96px;height:96px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;margin-bottom:18px;animation:pop .55s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(71,118,230,.5)}
 @keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
 .suc-title{font-size:26px;font-weight:900;margin-bottom:6px}
-.suc-desc{font-size:14px;color:var(--t2);line-height:1.6;max-width:280px;margin-bottom:20px}
-.suc-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r1);padding:16px;width:100%;text-align:left;margin-bottom:16px}
+.suc-desc{font-size:14px;color:var(--t2);line-height:1.6;max-width:280px;margin-bottom:16px}
+.suc-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r1);padding:16px;width:100%;text-align:left;margin-bottom:12px}
 .suc-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
 .suc-row:last-child{border:none}
 .suc-row span:first-child{color:var(--t2)}
 .suc-row span:last-child{font-weight:700}
+.suc-reminder{background:rgba(0,210,163,.08);border:1.5px solid rgba(0,210,163,.25);border-radius:var(--r2);padding:14px 16px;width:100%;display:flex;align-items:flex-start;gap:10px;text-align:left;margin-bottom:12px}
+.suc-reminder .sri{font-size:22px;flex-shrink:0;margin-top:1px}
+.suc-reminder .srt{font-size:13px;font-weight:700;color:var(--success);margin-bottom:3px}
+.suc-reminder .srd{font-size:12px;color:var(--t2);line-height:1.5}
 
 /* EMPTY */
 .empty{text-align:center;padding:48px 20px}
@@ -266,6 +337,7 @@ function hapticSel(){try{tg.HapticFeedback.selectionChanged();}catch(e){}}
 function hapticOk(){try{tg.HapticFeedback.notificationOccurred('success');}catch(e){}}
 haptic('light');
 
+/* ── DATA ── */
 const DOCTORS=[
   {id:1,name:'Анна Петрова',   role:'Стоматолог-терапевт', ini:'АП',color:'linear-gradient(135deg,#4776E6,#8E54E9)',rat:'4.9',exp:'8 лет', avail:true},
   {id:2,name:'Иван Сидоров',   role:'Ортодонт',             ini:'ИС',color:'linear-gradient(135deg,#11998E,#38EF7D)',rat:'4.8',exp:'12 лет',avail:true},
@@ -287,6 +359,19 @@ const SERVICES={
      {id:'s12',nm:'Лечение дёсен',         ico:'💊',price:'от 3 000 ₽',dur:'60 мин',hot:true},
      {id:'s13',nm:'Кюретаж',              ico:'🩺',price:'от 4 500 ₽',dur:'75 мин',hot:false}],
 };
+
+/* ── УТП 1: СИМПТОМ-МАТЧЕР ── */
+const SYMPTOMS=[
+  {ico:'🦷',txt:'Болит зуб',       desc:'Боль, чувствительность', docId:1, svcId:'s1'},
+  {ico:'🩸',txt:'Кровоточат дёсны',desc:'Воспаление, кровь',       docId:4, svcId:'s11'},
+  {ico:'😬',txt:'Кривые зубы',     desc:'Хочу ровный прикус',      docId:2, svcId:'s5'},
+  {ico:'✨',txt:'Хочу белые зубы', desc:'Отбеливание улыбки',      docId:1, svcId:'s4'},
+  {ico:'🔩',txt:'Нужен имплант',   desc:'Потеря или удаление зуба',docId:3, svcId:'s8'},
+  {ico:'🪥',txt:'Плановая чистка', desc:'Профилактика, гигиена',   docId:1, svcId:'s3'},
+  {ico:'🤕',txt:'Сломан зуб',      desc:'Скол, трещина',           docId:1, svcId:'s1'},
+  {ico:'📋',txt:'Просто осмотр',   desc:'Плановый визит',          docId:1, svcId:'s1'},
+];
+
 const PRICELIST=[
   {cat:'Терапия',items:[['Консультация','500–1 000 ₽'],['Лечение кариеса','1 500–3 000 ₽'],['Лечение пульпита','3 500–6 000 ₽'],['Профчистка','2 000–3 500 ₽'],['Отбеливание Zoom 4','8 000–15 000 ₽']]},
   {cat:'Ортодонтия',items:[['Консультация','1 000 ₽'],['Брекеты металл','25 000–35 000 ₽'],['Брекеты керамика','35 000–50 000 ₽'],['Элайнеры','от 90 000 ₽'],['Ретейнер','5 000–8 000 ₽']]},
@@ -294,18 +379,18 @@ const PRICELIST=[
   {cat:'Пародонтология',items:[['Консультация','800 ₽'],['Кюретаж (1 зуб)','1 500–2 500 ₽'],['Лечение дёсен','от 8 000 ₽'],['Шинирование','от 3 000 ₽']]},
 ];
 const REVIEWS=[
-  {name:'Алина К.',   stars:5,text:'Потрясающая клиника! Анна Петрова — профессионал с большой буквы. Всё безболезненно и быстро.',date:'15 апр 2026'},
-  {name:'Михаил Р.',  stars:5,text:'Записался через бот — очень удобно. Принят вовремя. Иван Сидоров поставил брекеты идеально.',date:'10 апр 2026'},
-  {name:'Светлана Б.',stars:4,text:'Хорошая клиника, современное оборудование. Единственный минус — парковка.',date:'5 апр 2026'},
+  {name:'Алина К.',   stars:5,text:'Потрясающая клиника! Анна Петрова — профессионал. Всё безболезненно и быстро. Пришла по симптом-матчеру — с первого раза попала к нужному врачу!',date:'15 апр 2026'},
+  {name:'Михаил Р.',  stars:5,text:'Записался через бот — очень удобно. Пришёл вовремя, напоминание пришло ровно за 2 часа. Иван Сидоров поставил брекеты идеально.',date:'10 апр 2026'},
+  {name:'Светлана Б.',stars:4,text:'Хорошая клиника, современное оборудование. Очень понравилась карточка безопасности — врач сразу знал о моей аллергии.',date:'5 апр 2026'},
   {name:'Артём Ф.',   stars:5,text:'Мария Козлова провела имплантацию безупречно. Уже второй раз — всегда доволен.',date:'1 апр 2026'},
 ];
 const FAQ=[
-  {q:'Как записаться на приём?',a:'Нажмите «Записаться» внизу экрана, выберите врача, услугу, дату и время. Займёт меньше минуты.'},
-  {q:'Как перенести запись?',a:'Перейдите в «Мои записи» и нажмите кнопку «Перенести» рядом с нужной записью.'},
-  {q:'Как отменить запись?',a:'В разделе «Мои записи» нажмите «Отменить» — появится окно подтверждения.'},
-  {q:'Как работает промокод?',a:'На шаге «Ваши данные» введите промокод и нажмите «Применить». Скидка отобразится в итоговом счёте.'},
-  {q:'Принимаете ли вы детей?',a:'Да, Анна Петрова принимает детей от 6 лет.'},
-  {q:'Есть ли парковка?',a:'Да, бесплатная парковка для пациентов прямо у клиники.'},
+  {q:'Что такое Симптом-матчер?',a:'Это умный подбор врача по вашей проблеме. Просто выберите симптом — мы сами подберём нужного специалиста и услугу.'},
+  {q:'Как работают напоминания?',a:'После записи бот автоматически отправит вам напоминание за 24 часа и за 2 часа до визита. Ничего не пропустите.'},
+  {q:'Как перенести запись?',a:'В разделе «Мои записи» нажмите «Перенести» — бот откроет мини-приложение с вашими данными и вы выберете новую дату.'},
+  {q:'Как работает промокод?',a:'На шаге «Данные» введите промокод. Рабочие коды: SMILE10 (−10%), FIRST20 (−20%), VIP15 (−15%).'},
+  {q:'Что такое карточка безопасности?',a:'Перед визитом укажите аллергии и страх боли. Врач увидит эту информацию и подготовится заранее.'},
+  {q:'Принимаете детей?',a:'Да, Анна Петрова принимает детей от 6 лет.'},
 ];
 const PROMOS={'SMILE10':10,'FIRST20':20,'VIP15':15};
 const TIMES={
@@ -318,15 +403,19 @@ const MS=['ЯНВ','ФЕВ','МАР','АПР','МАЙ','ИЮН','ИЮЛ','АВГ
 const MF=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
 const MN=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 
-// STATE
-let view='main',step=1;
-let doc=null,svc=null,dt=null,tm=null;
-let uname=tg.initDataUnsafe?.user?.first_name||'',uphone='',ucmt='',upromo='',udiscount=0;
+/* ── STATE ── */
+let view='main', step=1;
+let doc=null, svc=null, dt=null, tm=null;
+let uname=tg.initDataUnsafe?.user?.first_name||'', uphone='', ucmt='';
+let upromo='', udiscount=0;
+let ufear=0, uallergy='', ufirstVisit=false; // УТП 2: Patient card
+let symSelected=null;                          // УТП 1: Symptom
+let waitlisted=false;                          // УТП 3: Waitlist
 let records=[];
-let isReschedule=false,rescheduleIdx=-1;
-let infoTab='info',priceTab=0;
-let cancelIdx=-1;
-let pendingPayload=null;
+let isReschedule=false, rescheduleIdx=-1;
+let infoTab='info', priceTab=0;
+let cancelIdx=-1, pendingPayload=null;
+let npsScore=0, npsVisible=false, npsSubmitted=false;
 
 const disabledT=new Set();
 const allT=[...TIMES.morning,...TIMES.afternoon,...TIMES.evening];
@@ -334,10 +423,22 @@ while(disabledT.size<4)disabledT.add(allT[Math.floor(Math.random()*allT.length)]
 
 function dates(){const a=[];const now=new Date();for(let i=0;i<14;i++){const d=new Date(now);d.setDate(d.getDate()+i);a.push(d);}return a;}
 
-// RENDER
+function daysUntil(dateStr, timeStr){
+  const months={января:0,февраля:1,марта:2,апреля:3,мая:4,июня:5,июля:6,августа:7,сентября:8,октября:9,ноября:10,декабря:11};
+  const [d,m]=dateStr.split(' ');
+  const [h,mi]=timeStr.split(':').map(Number);
+  const date=new Date(new Date().getFullYear(),months[m],+d,h,mi);
+  const diff=Math.ceil((date-new Date())/(1000*60*60));
+  if(diff<=0)return null;
+  if(diff<24)return `через ${diff} ч`;
+  return `через ${Math.ceil(diff/24)} дн`;
+}
+
+/* ── RENDER ── */
 function render(){
   document.getElementById('app').innerHTML=
-    view==='main'?rMain():view==='booking'?rBook():view==='records'?rRec():view==='clinic'?rClinic():rHist();
+    view==='main'?rMain():view==='symptom'?rSymptom():view==='booking'?rBook():
+    view==='records'?rRec():view==='clinic'?rClinic():rHist();
   bind();
 }
 
@@ -345,8 +446,7 @@ function rHdr(back=false){
   return`<div class="hdr">
     <div class="hdr-logo">
       ${back?`<div class="hdr-back" onclick="goBack()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>`:''}
-      <div class="hdr-icon">🦷</div>
-      <div class="hdr-name">SmilePro</div>
+      <div class="hdr-icon">🦷</div><div class="hdr-name">MihailykProduct</div>
     </div>
     <div class="hdr-btn" onclick="view='main';render()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -354,7 +454,7 @@ function rHdr(back=false){
   </div>`;
 }
 function rTabs(){
-  const t=(v,ico,lbl,cnt=0)=>`<button class="tab ${view===v?'on':''}" onclick="view='${v}';render()">
+  const t=(v,ico,lbl,cnt=0)=>`<button class="tab ${view===v||view==='symptom'&&v==='booking'?'on':''}" onclick="nav('${v}')">
     ${cnt>0?`<span class="tab-badge">${cnt}</span>`:''}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${ico}</svg>${lbl}</button>`;
   return`<div class="tabs">
@@ -363,6 +463,11 @@ function rTabs(){
     ${t('records','<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>','Записи',records.length)}
     ${t('clinic','<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>','Клиника')}
   </div>`;
+}
+function nav(v){
+  if(v==='booking'){step=1;doc=null;svc=null;dt=null;tm=null;uname=tg.initDataUnsafe?.user?.first_name||'';uphone='';ucmt='';upromo='';udiscount=0;ufear=0;uallergy='';waitlisted=false;isReschedule=false;view='symptom';}
+  else view=v;
+  render();
 }
 function rProg(){
   const total=6,labels=['Врач','Услуга','Дата','Время','Данные','Итог'];
@@ -375,14 +480,13 @@ function rProg(){
   return`<div class="prog">${t}</div><div class="prog-meta"><span class="prog-lbl">${labels[step-1]||''}</span><span class="prog-cnt">${step}/6</span></div></div>`;
 }
 
-// MAIN
+/* ── MAIN ── */
 function rMain(){
   const greet=tg.initDataUnsafe?.user?.first_name?`Привет, ${tg.initDataUnsafe.user.first_name}! 👋`:'Добро пожаловать! 👋';
-  const ob=`view='booking';step=1;doc=null;svc=null;dt=null;tm=null;uname=tg.initDataUnsafe?.user?.first_name||'';uphone='';ucmt='';upromo='';udiscount=0;isReschedule=false;render()`;
   return rHdr()+`<div class="main">
     <div class="hero"><div class="hglow"></div><div class="hglow2"></div>
       <div class="hero-greet">${greet}</div>
-      <div class="hero-name">SmilePro Clinic</div>
+      <div class="hero-name">MihailykProduct Clinic</div>
       <div class="hero-desc">Запишитесь к лучшим специалистам. Быстро, удобно, без очередей.</div>
       <div class="hero-stats">
         <div class="hs"><span class="hs-n">4</span><span class="hs-l">Врача</span></div>
@@ -391,18 +495,32 @@ function rMain(){
         <div class="hs"><span class="hs-n">4.9★</span><span class="hs-l">Рейтинг</span></div>
       </div>
     </div>
-    <div class="promo-banner" onclick="${ob}">
-      <div class="promo-tag">🔥 Акция</div>
-      <div class="promo-title">Скидка 20% на первый визит</div>
-      <div class="promo-desc">Промокод <b>FIRST20</b> · только для новых пациентов</div>
+    <div class="utp-banner orange" onclick="nav('booking')">
+      <div class="utp-icon">🔥</div>
+      <div class="utp-body orange">
+        <div class="utp-tag">Акция</div>
+        <div class="utp-title">Скидка 20% на первый визит</div>
+        <div class="utp-sub">Промокод <b>FIRST20</b> · только для новых пациентов</div>
+      </div>
+    </div>
+    <div class="utp-banner green">
+      <div class="utp-icon">🔔</div>
+      <div class="utp-body green">
+        <div class="utp-tag">Умные напоминания</div>
+        <div class="utp-title">Никогда не пропустите визит</div>
+        <div class="utp-sub">Напомним за 24 часа и за 2 часа до приёма</div>
+      </div>
     </div>
     <div class="act-grid">
-      <div class="act-card" onclick="${ob}">
-        <div class="act-ico" style="background:linear-gradient(135deg,rgba(71,118,230,.25),rgba(142,84,233,.25))">📅</div>
-        <div style="flex:1"><div class="act-nm">Записаться на приём</div><div class="act-ds">Врач, услуга и удобное время</div></div>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      <div class="act-card" style="background:linear-gradient(135deg,rgba(71,118,230,.18),rgba(142,84,233,.1));border-color:rgba(71,118,230,.35)" onclick="nav('booking')">
+        <div class="act-ico" style="background:linear-gradient(135deg,rgba(71,118,230,.3),rgba(142,84,233,.3))">🩺</div>
+        <div style="flex:1">
+          <div class="act-nm">Подобрать врача по симптому</div>
+          <div class="act-ds" style="color:#7EA8FF">Опишите проблему — мы подберём специалиста</div>
+        </div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--a1)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
-      <div class="act-card" onclick="view='records';render()">
+      <div class="act-card" onclick="nav('records')">
         <div class="act-ico" style="background:linear-gradient(135deg,rgba(0,210,163,.2),rgba(0,150,120,.2))">📋</div>
         <div style="flex:1"><div class="act-nm">Мои записи ${records.length>0?`<span class="badge badge-blue">${records.length}</span>`:''}</div><div class="act-ds">Активные визиты и перенос</div></div>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -421,17 +539,66 @@ function rMain(){
   </div>${rTabs()}`;
 }
 
-// BOOKING
+/* ── УТП 1: SYMPTOM MATCHER ── */
+function rSymptom(){
+  const matched=symSelected!==null?SYMPTOMS[symSelected]:null;
+  const matchedDoc=matched?DOCTORS.find(d=>d.id===matched.docId):null;
+  const matchedSvc=matched?Object.values(SERVICES).flat().find(s=>s.id===matched.svcId):null;
+  return rHdr(true)+`<div class="content">
+    <div class="s-tag">Умный подбор</div>
+    <div class="s-title">Что вас беспокоит?</div>
+    <div class="s-sub">Выберите симптом — мы подберём нужного врача</div>
+    <div class="sym-grid">
+      ${SYMPTOMS.map((s,i)=>`
+        <div class="sym-card ${symSelected===i?'sel':''}" data-sym="${i}">
+          <div class="sym-tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span class="sym-ico">${s.ico}</span>
+          <div class="sym-txt">${s.txt}</div>
+          <div class="sym-desc">${s.desc}</div>
+        </div>`).join('')}
+    </div>
+    ${matched&&matchedDoc?`
+      <div class="match-result show">
+        <div class="match-title">✅ Подобранный специалист:</div>
+        <div class="match-doc">
+          <div class="match-av" style="background:${matchedDoc.color}">${matchedDoc.ini}</div>
+          <div>
+            <div style="font-size:15px;font-weight:700">${matchedDoc.name}</div>
+            <div style="font-size:12px;color:var(--t2)">${matchedDoc.role}</div>
+            ${matchedSvc?`<div style="font-size:12px;color:var(--a1);margin-top:4px;font-weight:700">→ ${matchedSvc.nm}</div>`:''}
+          </div>
+        </div>
+      </div>`:``}
+    <div style="height:16px"></div>
+    <div style="text-align:center;font-size:13px;color:var(--t3);cursor:pointer" onclick="skipSymptom()">Выбрать врача вручную →</div>
+  </div>
+  <div class="bbar"><button class="btn" ${symSelected===null?'disabled':''} onclick="applySymptom()">Записаться к врачу →</button></div>`;
+}
+
+function applySymptom(){
+  if(symSelected===null)return;
+  const s=SYMPTOMS[symSelected];
+  doc=DOCTORS.find(d=>d.id===s.docId)||null;
+  svc=Object.values(SERVICES).flat().find(sv=>sv.id===s.svcId)||null;
+  step=doc&&svc?3:doc?2:1;
+  view='booking'; hapticOk(); render();
+}
+function skipSymptom(){
+  symSelected=null; doc=null; svc=null; step=1; view='booking'; render();
+}
+
+/* ── BOOKING ── */
 function rBook(){
   if(step===7)return rHdr()+rSuccess();
   let body='';
+
   if(step===1){
-    body=`<div class="s-tag">${isReschedule?'Перенос записи':'Шаг 1'}</div>
+    body=`<div class="s-tag">${isReschedule?'Перенос':'Шаг 1'}</div>
     <div class="s-title">Выберите врача</div><div class="s-sub">Выберите специалиста для вашего визита</div>
     ${DOCTORS.map(d=>`<div class="doc-card ${doc&&doc.id===d.id?'sel':''}" data-doc="${d.id}">
       <div style="position:relative">
         <div class="doc-av" style="background:${d.color}">${d.ini}</div>
-        ${d.avail?'<div class="doc-av-badge"></div>':''}
+        ${d.avail?'<div class="doc-av-dot"></div>':''}
       </div>
       <div class="doc-info">
         <div class="doc-name">${d.name}</div><div class="doc-role">${d.role}</div>
@@ -482,14 +649,20 @@ function rBook(){
       ${TIMES[key].map(t=>`<div class="ts ${tm===t?'sel':''} ${disabledT.has(t)?'dis':''}" data-time="${t}">${t}</div>`).join('')}</div>`;
     body=`<div class="s-tag">Шаг 4</div><div class="s-title">Выберите время</div>
     <div class="s-sub">${doc.name} · ${dt.getDate()} ${MF[dt.getMonth()]}</div>
-    ${G('☀️ Утро','morning')}${G('🌤 День','afternoon')}${G('🌆 Вечер','evening')}`;
+    ${G('☀️ Утро','morning')}${G('🌤 День','afternoon')}${G('🌆 Вечер','evening')}
+    <!-- УТП 3: ЛИСТ ОЖИДАНИЯ -->
+    <button class="waitlist-btn ${waitlisted?'joined':''}" onclick="toggleWaitlist()">
+      ${waitlisted?'✅ Вы в листе ожидания — уведомим при освобождении слота':'⏳ Нет подходящего времени? Встать в лист ожидания'}
+    </button>`;
   }
   else if(step===5){
+    /* УТП 2: PATIENT SAFETY CARD */
+    const fearOpts=[{v:1,ico:'😌',lbl:'Спокойно'},{v:2,ico:'😰',lbl:'Немного'},{v:3,ico:'😱',lbl:'Очень боюсь'}];
     body=`<div class="s-tag">Шаг 5</div><div class="s-title">Ваши данные</div>
-    <div class="s-sub">Контактная информация</div>
+    <div class="s-sub">Контактная информация и карточка безопасности</div>
     <div class="fg"><label>Имя и фамилия</label><input class="fi" id="iname" type="text" placeholder="Иван Иванов" value="${uname}"></div>
     <div class="fg"><label>Номер телефона</label><input class="fi" id="iphone" type="tel" placeholder="+7 (___) ___-__-__" value="${uphone}"></div>
-    <div class="fg"><label>Комментарий (необязательно)</label><textarea class="fi" id="icmt" placeholder="Опишите жалобу или пожелание...">${ucmt}</textarea></div>
+    <div class="fg"><label>Комментарий (необязательно)</label><textarea class="fi" id="icmt" placeholder="Опишите жалобу подробнее...">${ucmt}</textarea></div>
     <div class="fg">
       <label>Промокод</label>
       <div class="promo-row">
@@ -497,11 +670,42 @@ function rBook(){
         <button class="promo-btn" onclick="applyPromo()">Применить</button>
       </div>
       <div class="promo-ok" id="promo-ok" style="${udiscount>0?'display:block;color:var(--success)':''}">${udiscount>0?`✓ Скидка ${udiscount}% применена!`:''}</div>
+    </div>
+    <div style="height:4px"></div>
+    <div style="background:rgba(255,87,87,.06);border:1.5px solid rgba(255,87,87,.15);border-radius:var(--r2);padding:16px">
+      <div style="font-size:13px;font-weight:800;color:var(--danger);margin-bottom:12px;display:flex;align-items:center;gap:6px">
+        🛡️ Карточка безопасности
+        <span style="font-size:11px;color:var(--t3);font-weight:600">(передаётся врачу)</span>
+      </div>
+      <div class="fg" style="margin-bottom:10px">
+        <label>Аллергии на препараты</label>
+        <input class="fi-sm" id="iallergy" type="text" placeholder="Например: лидокаин, пенициллин" value="${uallergy}">
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label>Страх боли</label>
+        <div class="fear-row">
+          ${fearOpts.map(f=>`<div class="fear-btn ${ufear===f.v?'sel':''}" data-fear="${f.v}">
+            <div>${f.ico}</div><div class="fear-label">${f.lbl}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div style="height:10px"></div>
+    <div class="toggle-row">
+      <span class="toggle-label">Первый визит в клинику</span>
+      <div class="toggle ${ufirstVisit?'on':''}" id="toggle-first" onclick="ufirstVisit=!ufirstVisit;document.getElementById('toggle-first').className='toggle '+(ufirstVisit?'on':'')"></div>
     </div>`;
   }
   else if(step===6){
     body=`<div class="s-tag">Шаг 6 · Подтверждение</div><div class="s-title">Проверьте данные</div>
     <div class="s-sub">Всё верно? Нажмите «Подтвердить»</div>
+    <!-- УТП 4: Reminder notice -->
+    <div class="reminder-card">
+      <div class="ri">🔔</div>
+      <div><div class="rt">Умные напоминания включены</div>
+        <div class="rd">Мы напомним вам за 24 часа и за 2 часа до приёма — прямо в этом чате.</div>
+      </div>
+    </div>
     <div class="smr">
       <div class="smr-head">
         <div class="smr-htag">${isReschedule?'Перенос записи':'Запись к специалисту'}</div>
@@ -517,62 +721,118 @@ function rBook(){
         <div class="smr-row"><span class="smr-k">Телефон</span><span class="smr-v">${uphone}</span></div>
         ${ucmt?`<div class="smr-row"><span class="smr-k">Комментарий</span><span class="smr-v">${ucmt}</span></div>`:''}
         ${upromo&&udiscount>0?`<div class="smr-row"><span class="smr-k">Промокод</span><span class="smr-v green">✓ ${upromo} (−${udiscount}%)</span></div>`:''}
+        ${waitlisted?`<div class="smr-row"><span class="smr-k">Лист ожидания</span><span class="smr-v green">✓ Активен</span></div>`:''}
       </div>
+      ${uallergy||ufear>0?`<div class="smr-alert">⚠️ <div><b>Карточка безопасности:</b>${uallergy?` Аллергия: ${uallergy}.`:''}${ufear===3?' Сильный страх боли — требуется особый подход.':ufear===2?' Небольшой страх боли.':''}</div></div>`:''}
     </div>`;
   }
 
   const lbls=['','Далее →','Далее →','Далее →','Далее →','Далее →','✓ Подтвердить запись'];
-  const dis=(step===1&&!doc)||(step===2&&!svc)||(step===3&&!dt)||(step===4&&!tm)||(step===5&&(!uname.trim()||!uphone.trim()));
+  const dis=(step===1&&!doc)||(step===2&&!svc)||(step===3&&!dt)||(step===4&&!tm&&!waitlisted)||(step===5&&(!uname.trim()||!uphone.trim()));
   return rHdr(step>1)+rProg()+`<div class="content">${body}</div>
-    <div class="bbar"><button class="btn" ${dis?'disabled':''} onclick="nextStep()">${lbls[step]}</button></div>`;
+    <div class="bbar"><button class="btn" ${dis?'disabled':''} onclick="nextStep()">${waitlisted&&step===4?'Встать в лист ожидания →':lbls[step]}</button></div>`;
 }
 
-// SUCCESS — FIX: sendData вызывается ТОЛЬКО здесь, при нажатии "На главную"
+/* SUCCESS */
 function rSuccess(){
+  if(!npsVisible&&!npsSubmitted&&!waitlisted&&!isReschedule){
+    setTimeout(()=>{
+      if(document.getElementById('nps-overlay'))return;
+      npsVisible=true;const a=document.getElementById('app');if(a){a.insertAdjacentHTML('beforeend',rNps());bindNps();}
+    },2000);
+  }
   return`<div class="content"><div class="suc">
     <div class="suc-confetti">🎉</div>
     <div class="suc-ring"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
-    <div class="suc-title">${isReschedule?'Запись перенесена!':'Вы записаны!'}</div>
-    <div class="suc-desc">${doc.name}<br>${dt.getDate()} ${MF[dt.getMonth()]} в ${tm}<br><span style="color:var(--t2)">${svc.nm}</span></div>
-    <div class="suc-card">
+    <div class="suc-title">${isReschedule?'Запись перенесена!':waitlisted?'В листе ожидания!':'Вы записаны!'}</div>
+    <div class="suc-desc">${waitlisted?'Мы уведомим вас, когда освободится удобный слот у '+doc.name:doc.name+'<br>'+dt.getDate()+' '+MF[dt.getMonth()]+' в '+tm+'<br><span style="color:var(--t2)">'+svc.nm+'</span>'}</div>
+    ${!waitlisted?`<div class="suc-card">
       <div class="suc-row"><span>Врач</span><span>${doc.name}</span></div>
       <div class="suc-row"><span>Услуга</span><span>${svc.nm}</span></div>
       <div class="suc-row"><span>Дата и время</span><span>${dt.getDate()} ${MF[dt.getMonth()]}, ${tm}</span></div>
       <div class="suc-row"><span>Телефон</span><span>${uphone}</span></div>
       ${upromo&&udiscount>0?`<div class="suc-row"><span>Скидка</span><span style="color:var(--success)">−${udiscount}%</span></div>`:''}
     </div>
+    <div class="suc-reminder">
+      <div class="sri">🔔</div>
+      <div>
+        <div class="srt">Напоминания включены</div>
+        <div class="srd">Пришлём уведомление за 24 часа и за 2 часа до приёма прямо в Telegram.</div>
+      </div>
+    </div>`:''}
   </div>
   <div class="bbar"><button class="btn" onclick="finishBooking()">🏠 На главную</button></div>
   </div>`;
 }
 
-// RECORDS
+function rNps(){
+  return`<div class="nps-overlay" id="nps-overlay">
+    <div class="nps-sheet">
+      <div class="nps-title">Оцените удобство записи 🙏</div>
+      <div class="nps-sub">По шкале от 1 до 10, насколько вероятно вы порекомендуете нас другу?</div>
+      <div class="nps-scale">
+        ${[1,2,3,4,5,6,7,8,9,10].map(n=>`<div class="nps-n ${npsScore===n?'sel':''}" data-nps="${n}">${n}</div>`).join('')}
+      </div>
+      <div class="nps-lbls"><span>Точно нет</span><span>Обязательно!</span></div>
+      <div class="nps-done" id="nps-done">
+        <div style="font-size:28px;margin-bottom:8px">🎉</div>
+        <div style="font-size:15px;font-weight:800;color:var(--success);margin-bottom:4px">Спасибо за оценку!</div>
+        <div style="font-size:13px;color:var(--t2)">Ваш отзыв помогает нам становиться лучше</div>
+      </div>
+      <button class="btn" id="nps-btn" ${npsScore===0?'disabled':''} onclick="submitNps()">Отправить оценку</button>
+    </div>
+  </div>`;
+}
+function bindNps(){
+  document.querySelectorAll('[data-nps]').forEach(el=>el.addEventListener('click',()=>{
+    npsScore=+el.dataset.nps; hapticSel();
+    document.querySelectorAll('.nps-n').forEach(n=>n.classList.toggle('sel',+n.dataset.nps===npsScore));
+    const b=document.getElementById('nps-btn');if(b)b.disabled=false;
+  }));
+}
+function submitNps(){
+  if(!npsScore)return;
+  hapticOk(); npsSubmitted=true;
+  const done=document.getElementById('nps-done');
+  if(done)done.style.display='block';
+  const btn=document.getElementById('nps-btn');
+  if(btn){btn.textContent='✓ Отправлено';btn.disabled=true;btn.style.background='var(--card2)';btn.style.color='var(--t2)';btn.style.boxShadow='none';}
+  try{tg.sendData(JSON.stringify({type:'nps',score:npsScore,doctor:doc?.name,service:svc?.nm}));}catch(e){}
+  setTimeout(()=>{const o=document.getElementById('nps-overlay');if(o)o.remove();npsVisible=false;},1800);
+}
+}
+
+/* RECORDS */
 function rRec(){
   return rHdr()+`<div class="content">
     <div class="s-title" style="margin-bottom:16px">Мои записи</div>
     ${records.length===0?`<div class="empty">
       <span class="empty-ico">📋</span>
-      <p>Нет активных записей.<br>Запишитесь на приём прямо сейчас.</p>
-      <button class="btn" onclick="view='booking';step=1;doc=null;svc=null;dt=null;tm=null;uname=tg.initDataUnsafe?.user?.first_name||'';uphone='';ucmt='';upromo='';udiscount=0;isReschedule=false;render()" style="max-width:220px;margin-top:20px">📅 Записаться</button>
+      <p>Нет активных записей.</p>
+      <button class="btn" onclick="nav('booking')" style="max-width:220px;margin-top:20px">🩺 Подобрать врача</button>
     </div>`:`
-    ${records.map((r,i)=>`<div class="rec-card">
-      <div class="rec-head">
-        <div><div class="rec-doc">${r.doctor}</div><div class="rec-svc">${r.service}</div></div>
-        <span class="badge badge-green">● Активна</span>
-      </div>
-      <div class="rec-date">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        ${r.date} в ${r.time}
-      </div>
-      <div class="rec-btns">
-        <button class="rb rb-re" onclick="startReschedule(${i})">🔄 Перенести</button>
-        <button class="rb rb-cx" onclick="askCancel(${i})">❌ Отменить</button>
-      </div>
-    </div>`).join('')}`}
+    ${records.map((r,i)=>{
+      const cd=r.date&&r.time?daysUntil(r.date,r.time):null;
+      return`<div class="rec-card">
+        <div class="rec-head">
+          <div><div class="rec-doc">${r.doctor}</div><div class="rec-svc">${r.service}</div></div>
+          <span class="badge badge-green">● Активна</span>
+        </div>
+        <div class="rec-date">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          ${r.date} в ${r.time}
+        </div>
+        ${cd?`<div class="countdown">⏰ ${cd}</div>`:''}
+        <div class="rec-btns">
+          <button class="rb rb-re" onclick="startReschedule(${i})">🔄 Перенести</button>
+          <button class="rb rb-cx" onclick="askCancel(${i})">❌ Отменить</button>
+        </div>
+      </div>`;
+    }).join('')}`}
   </div>${rTabs()}`;
 }
 
-// CLINIC INFO
+/* CLINIC INFO */
 function rClinic(){
   const tabs=[['info','ℹ️ Инфо'],['prices','💰 Прайс'],['reviews','⭐ Отзывы'],['faq','❓ FAQ']];
   let body='';
@@ -582,7 +842,7 @@ function rClinic(){
          ['📞','rgba(0,210,163,.12)','Телефон','<a href="tel:+74951234567" class="info-link">+7 (495) 123-45-67</a>'],
          ['🕐','rgba(255,184,54,.12)','Пн–Пт','09:00 – 20:00'],
          ['🕐','rgba(255,184,54,.12)','Сб–Вс','10:00 – 17:00'],
-         ['✉️','rgba(142,84,233,.12)','Email','<a href="mailto:info@smilepro.ru" class="info-link">info@smilepro.ru</a>']
+         ['✉️','rgba(142,84,233,.12)','Email','<a href="mailto:info@mihailykproduct.ru" class="info-link">info@mihailykproduct.ru</a>'],
       ].map(([ico,bg,lbl,val])=>`<div class="info-row">
         <div class="info-ico" style="background:${bg}">${ico}</div>
         <div><div class="info-lbl">${lbl}</div><div class="info-val">${val}</div></div>
@@ -595,10 +855,12 @@ function rClinic(){
     <div style="height:16px"></div>
     <div style="font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">🏆 Наши преимущества</div>
     <div class="info-card">
-      ${[['💉','Безболезненное лечение','Современная анестезия'],
+      ${[['🩺','Симптом-матчер','Подберём врача по вашей проблеме'],
+         ['🔔','Умные напоминания','За 24ч и за 2ч — никогда не пропустите'],
+         ['🛡️','Карточка безопасности','Врач знает об аллергиях и страхах'],
+         ['💉','Безболезненно','Современная анестезия'],
          ['🔬','Новейшее оборудование','3D-томограф, лазер'],
-         ['👨‍⚕️','Опытные врачи','Стаж от 6 до 15 лет'],
-         ['🅿️','Бесплатная парковка','Прямо у клиники']
+         ['🅿️','Бесплатная парковка','Прямо у клиники'],
       ].map(([ico,nm,ds])=>`<div class="info-row">
         <div class="info-ico" style="background:rgba(71,118,230,.1)">${ico}</div>
         <div><div class="info-val">${nm}</div><div style="font-size:12px;color:var(--t2);margin-top:2px">${ds}</div></div>
@@ -627,37 +889,40 @@ function rClinic(){
     ${FAQ.map((f,i)=>`<div class="faq-item" id="faq${i}" onclick="toggleFaq(${i})">
       <div class="faq-q"><span>${f.q}</span>
         <svg class="faq-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="faq-a">${f.a}</div>
+      </div><div class="faq-a">${f.a}</div>
     </div>`).join('')}`;
   }
   return rHdr()+`<div class="content">
-    <div class="sec-tabs" style="margin-bottom:16px">${tabs.map(([v,l])=>`<span class="stab ${infoTab===v?'on':''}" onclick="infoTab='${v}';render()">${l}</span>`).join('')}</div>
-    ${body}
+    <div class="sec-tabs">${tabs.map(([v,l])=>`<span class="stab ${infoTab===v?'on':''}" onclick="infoTab='${v}';render()">${l}</span>`).join('')}</div>
+    <div style="height:4px"></div>${body}
   </div>${rTabs()}`;
 }
 
-function rHist(){
-  return rHdr()+`<div class="content">
-    <div class="s-title" style="margin-bottom:16px">История визитов</div>
-    <div class="empty"><span class="empty-ico">🕐</span><p>История пуста.<br>Завершённые визиты появятся здесь.</p></div>
-  </div>${rTabs()}`;
+/* ── ACTIONS ── */
+function goBack(){
+  if(view==='symptom'){view='main';render();return;}
+  if(step>1){step--;haptic('light');render();}
 }
-
-// ACTIONS
-function goBack(){if(step>1){step--;haptic('light');render();}}
 
 function nextStep(){
+  if(step===4&&waitlisted&&!tm){
+    // Пользователь нажал "Встать в лист ожидания" без выбора времени
+    pendingPayload={doctor:doc.name,specialty:doc.role,service:svc.nm,price:svc.price,
+      date:dt?`${dt.getDate()} ${MF[dt.getMonth()]}`:'любая',time:'любое',
+      name:uname||'—',phone:uphone||'—',comment:'Лист ожидания',isWaitlist:true};
+    step=7; hapticOk(); render(); return;
+  }
   if(step===5){
-    const n=document.getElementById('iname'),p=document.getElementById('iphone'),c=document.getElementById('icmt'),pr=document.getElementById('ipromo');
-    if(n)uname=n.value;if(p)uphone=p.value;if(c)ucmt=c.value;
+    const n=document.getElementById('iname'),p=document.getElementById('iphone'),c=document.getElementById('icmt'),pr=document.getElementById('ipromo'),al=document.getElementById('iallergy');
+    if(n)uname=n.value; if(p)uphone=p.value; if(c)ucmt=c.value;
     if(pr)upromo=pr.value.trim().toUpperCase();
+    if(al)uallergy=al.value.trim();
   }
   if(step===6){
-    // Сохраняем payload — отправим ПОСЛЕ показа успешного экрана
     pendingPayload={doctor:doc.name,specialty:doc.role,service:svc.nm,price:svc.price,
       date:`${dt.getDate()} ${MF[dt.getMonth()]}`,time:tm,name:uname,phone:uphone,
-      comment:ucmt,promo:upromo,discount:udiscount,isReschedule};
+      comment:ucmt,promo:upromo,discount:udiscount,isReschedule,
+      fear:ufear,allergy:uallergy,firstVisit:ufirstVisit,waitlist:waitlisted};
     if(isReschedule&&rescheduleIdx>=0){
       records[rescheduleIdx]={doctor:doc.name,service:svc.nm,date:`${dt.getDate()} ${MF[dt.getMonth()]}`,time:tm,phone:uphone,name:uname};
     } else {
@@ -665,50 +930,58 @@ function nextStep(){
     }
     hapticOk();
   }
-  step++;haptic('light');render();
+  step++; haptic('light'); render();
 }
 
-// ✅ sendData вызывается ТОЛЬКО при нажатии "На главную", после того как пользователь видит экран успеха
 function finishBooking(){
-  if(pendingPayload){
-    try{tg.sendData(JSON.stringify(pendingPayload));}catch(e){}
-    pendingPayload=null;
-  }
-  view='main';render();
+  if(pendingPayload){try{tg.sendData(JSON.stringify(pendingPayload));}catch(e){} pendingPayload=null;}
+  view='main'; render();
 }
 
 function applyPromo(){
-  const el=document.getElementById('ipromo');if(!el)return;
+  const el=document.getElementById('ipromo'); if(!el)return;
   const code=el.value.trim().toUpperCase();
   const ok=document.getElementById('promo-ok');
   if(PROMOS[code]){
-    upromo=code;udiscount=PROMOS[code];
+    upromo=code; udiscount=PROMOS[code];
     if(ok){ok.style.display='block';ok.style.color='var(--success)';ok.textContent=`✓ Скидка ${udiscount}% применена!`;}
     hapticOk();
   } else {
-    upromo='';udiscount=0;
+    upromo=''; udiscount=0;
     if(ok){ok.style.display='block';ok.style.color='var(--danger)';ok.textContent='✗ Промокод не найден';}
     haptic('medium');
   }
 }
 
+function toggleWaitlist(){
+  waitlisted=!waitlisted; hapticSel();
+  const btn=document.querySelector('.waitlist-btn');
+  if(btn){
+    btn.className='waitlist-btn '+(waitlisted?'joined':'');
+    btn.textContent=waitlisted?'✅ Вы в листе ожидания — уведомим при освобождении слота':'⏳ Нет подходящего времени? Встать в лист ожидания';
+  }
+  // Если встали в лист — кнопка "Далее" активируется
+  const bBtn=document.querySelector('.btn');
+  if(bBtn&&step===4) bBtn.disabled=!tm&&!waitlisted;
+}
+
 function startReschedule(idx){
   haptic('medium');
   const r=records[idx];
-  isReschedule=true;rescheduleIdx=idx;
+  isReschedule=true; rescheduleIdx=idx;
   doc=DOCTORS.find(d=>d.name===r.doctor)||DOCTORS[0];
-  svc=null;dt=null;tm=null;
-  uname=r.name||'';uphone=r.phone||'';ucmt='';upromo='';udiscount=0;
-  step=1;view='booking';render();
+  svc=null; dt=null; tm=null;
+  uname=r.name||''; uphone=r.phone||''; ucmt=''; upromo=''; udiscount=0;
+  ufear=0; uallergy=''; waitlisted=false;
+  step=1; view='booking'; render();
 }
-
 function askCancel(idx){
-  haptic('medium');cancelIdx=idx;
+  haptic('medium'); cancelIdx=idx;
   const o=document.createElement('div');
-  o.className='overlay';o.id='ov';
+  o.className='overlay'; o.id='ov';
   o.innerHTML=`<div class="sheet">
     <div class="sheet-title">Отменить запись?</div>
-    <div class="sheet-desc">Вы уверены, что хотите отменить запись к <b>${records[idx].doctor}</b> на <b>${records[idx].date} в ${records[idx].time}</b>?</div>
+    <div class="sheet-desc">Отменить запись к <b>${records[idx].doctor}</b> на <b>${records[idx].date} в ${records[idx].time}</b>?</div>
     <div class="sheet-btns">
       <button class="sheet-btn sheet-danger" onclick="confirmCancel()">Да, отменить</button>
       <button class="sheet-btn sheet-safe" onclick="closeOv()">Нет, оставить</button>
@@ -716,60 +989,55 @@ function askCancel(idx){
   </div>`;
   document.body.appendChild(o);
 }
-
 function confirmCancel(){
   if(cancelIdx>=0){records.splice(cancelIdx,1);cancelIdx=-1;}
-  closeOv();haptic('medium');render();
+  closeOv(); haptic('medium'); render();
 }
 function closeOv(){const o=document.getElementById('ov');if(o)o.remove();}
 function toggleFaq(i){const el=document.getElementById('faq'+i);if(el)el.classList.toggle('open');}
-
 function updBtn(){
-  const b=document.querySelector('.btn');if(!b)return;
-  if(step===5)b.disabled=!(uname.trim()&&uphone.trim());
+  const b=document.querySelector('.btn'); if(!b||step!==5)return;
+  b.disabled=!(uname.trim()&&uphone.trim());
 }
 
+/* ── BIND ── */
 function bind(){
+  document.querySelectorAll('[data-sym]').forEach(el=>el.addEventListener('click',()=>{
+    symSelected=+el.dataset.sym; hapticSel(); render();
+  }));
   document.querySelectorAll('[data-doc]').forEach(el=>el.addEventListener('click',()=>{
-    doc=DOCTORS.find(d=>d.id===+el.dataset.doc);svc=null;hapticSel();render();
+    doc=DOCTORS.find(d=>d.id===+el.dataset.doc); svc=null; hapticSel(); render();
   }));
   document.querySelectorAll('[data-svc]').forEach(el=>el.addEventListener('click',()=>{
-    svc=(SERVICES[doc.id]||[]).find(s=>s.id===el.dataset.svc);hapticSel();render();
+    svc=(SERVICES[doc.id]||[]).find(s=>s.id===el.dataset.svc); hapticSel(); render();
   }));
   document.querySelectorAll('[data-date]').forEach(el=>el.addEventListener('click',()=>{
-    dt=dates()[+el.dataset.date];hapticSel();render();
+    dt=dates()[+el.dataset.date]; hapticSel(); render();
   }));
   document.querySelectorAll('[data-time]').forEach(el=>el.addEventListener('click',()=>{
-    tm=el.dataset.time;hapticSel();render();
+    tm=el.dataset.time; hapticSel(); render();
+  }));
+  document.querySelectorAll('[data-fear]').forEach(el=>el.addEventListener('click',()=>{
+    ufear=+el.dataset.fear; hapticSel();
+    document.querySelectorAll('.fear-btn').forEach(b=>b.classList.toggle('sel',+b.dataset.fear===ufear));
   }));
   const n=document.getElementById('iname'),p=document.getElementById('iphone');
   if(n)n.addEventListener('input',()=>{uname=n.value;updBtn();});
   if(p)p.addEventListener('input',()=>{uphone=p.value;updBtn();});
 }
 
-// Читаем URL-параметры — если открыт для переноса, сразу настраиваем состояние
-(function initFromUrl() {
-  const p = new URLSearchParams(window.location.search);
-  if (p.get('reschedule') !== '1') return;
-
-  const docName = decodeURIComponent(p.get('doc') || '');
-  const svcName = decodeURIComponent(p.get('svc') || '');
-
-  const foundDoc = DOCTORS.find(d => d.name === docName);
-  if (foundDoc) doc = foundDoc;
-
-  if (foundDoc) {
-    const foundSvc = (SERVICES[foundDoc.id] || []).find(s => s.nm === svcName);
-    if (foundSvc) svc = foundSvc;
-  }
-
-  isReschedule = true;
-  rescheduleIdx = parseInt(p.get('idx') || '0');
-  view = 'booking';
-
-  if (doc && svc) step = 3;      // врач и услуга известны — сразу к дате
-  else if (doc)   step = 2;      // только врач — выбрать услугу
-  else            step = 1;      // с начала
+/* ── INIT FROM URL (reschedule param) ── */
+(function(){
+  const p=new URLSearchParams(window.location.search);
+  if(p.get('reschedule')!=='1')return;
+  const docName=decodeURIComponent(p.get('doc')||'');
+  const svcName=decodeURIComponent(p.get('svc')||'');
+  const foundDoc=DOCTORS.find(d=>d.name===docName);
+  if(foundDoc) doc=foundDoc;
+  if(foundDoc){const fs=(SERVICES[foundDoc.id]||[]).find(s=>s.nm===svcName);if(fs)svc=fs;}
+  isReschedule=true; rescheduleIdx=parseInt(p.get('idx')||'0');
+  view='booking';
+  if(doc&&svc)step=3; else if(doc)step=2; else step=1;
 })();
 
 render();
