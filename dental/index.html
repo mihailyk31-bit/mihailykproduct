@@ -797,8 +797,13 @@ function submitNps(){
   if(done)done.style.display='block';
   const btn=document.getElementById('nps-btn');
   if(btn){btn.textContent='✓ Отправлено';btn.disabled=true;btn.style.background='var(--card2)';btn.style.color='var(--t2)';btn.style.boxShadow='none';}
-  try{tg.sendData(JSON.stringify({type:'nps',score:npsScore,doctor:doc?.name,service:svc?.nm}));}catch(e){}
-  setTimeout(()=>{const o=document.getElementById('nps-overlay');if(o)o.remove();npsVisible=false;},1800);
+  // Добавляем NPS к данным записи и отправляем всё вместе
+  if(pendingPayload) pendingPayload.npsScore=npsScore;
+  setTimeout(()=>{
+    const o=document.getElementById('nps-overlay');if(o)o.remove();
+    npsVisible=false;
+    finishBooking();
+  },1800);
 }
 
 /* RECORDS */
