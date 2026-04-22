@@ -800,7 +800,6 @@ function submitNps(){
   try{tg.sendData(JSON.stringify({type:'nps',score:npsScore,doctor:doc?.name,service:svc?.nm}));}catch(e){}
   setTimeout(()=>{const o=document.getElementById('nps-overlay');if(o)o.remove();npsVisible=false;},1800);
 }
-}
 
 /* RECORDS */
 function rRec(){
